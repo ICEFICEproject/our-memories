@@ -1,0 +1,247 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    scroll-behavior: smooth; /* Плавная прокрутка по кнопкам */
+    
+    /* ГЛАВНАЯ МАГИЯ: Блокируем скролл мышкой и прячем полосу прокрутки */
+    overflow: hidden; 
+}
+/* Контейнер для сердечек на весь экран */
+.hearts-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* Магия: клики проходят сквозь этот слой */
+    z-index: 999;          /* Сердечки будут летать поверх фонов */
+    overflow: hidden;
+}
+
+/* Стили для каждого отдельного сердечка */
+.heart-particle {
+    position: absolute;
+    bottom: -30px; /* Появляются чуть ниже видимой части экрана */
+    color: rgba(231, 76, 60, 0.4); /* Нежный полупрозрачный красный цвет */
+    user-select: none;
+    animation: floatUp linear forwards;
+}
+
+/* Анимация полета вверх */
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) translateX(0) rotate(0deg);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1; /* Плавно проявляются на старте */
+    }
+    90% {
+        opacity: 0.7;
+    }
+    100% {
+        /* Улетают за верхний край, немного смещаясь вбок и покачиваясь */
+        transform: translateY(-110vh) translateX(var(--random-x)) rotate(var(--random-rotate));
+        opacity: 0; /* Плавно исчезают в конце пути */
+    }
+}
+.slide {
+    width: 100vw;  /* 100% ширины видимого экрана */
+    height: 100vh; /* 100% высоты видимого экрана */
+    
+    /* Центрируем текст и кнопку внутри слайда */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+
+    overflow-y: auto;
+}
+.container {
+    padding: 30px 20px;
+    font-family: Arial, sans-serif;
+
+    margin: auto;
+}
+.image-container {
+    display: flex;             /* Включаем магию Flexbox */
+    justify-content: center;   /* Центрируем фотографии по горизонтали */
+    align-items: center;       /* Выравниваем их по центру относительно друг друга */
+    gap: 20px;                 /* Красивый зазор (расстояние) между картинками */
+    flex-wrap: wrap;           /* Если экран очень узкий (телефон), картинки перенесутся друг под друга, чтобы не сломать сайт */
+    margin: 20px 0;
+}
+.image-container img, .image-container video {
+    max-width: 40%;            /* Ограничиваем ширину. Если картинок две, 40% — идеальный размер */
+    max-height: 40vh;          /* Чуть уменьшаем высоту, чтобы две картинки и текст точно влезли в экран */
+    height: auto;
+    object-fit: contain;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+
+.bg-first { background-color: #f0f3f4; color: #2c3e50; }
+.bg-second { background-color: #34495e; color: #ecf0f1; }
+.bg-third { background-color: #e73cc2; color: #ffffff; }
+.bg-fourth { background-color: #2eccbf; color: #ffffff; }
+.bg-fifth { background-color: #9b59b6; color: #ffffff; }
+.bg-sixth { background-color: #f39c12; color: #ffffff; }
+.bg-seventh { background-color: #1abc9c; color: #ffffff; }
+.bg-eighth { background-color: #e67e22; color: #ffffff; }
+.bg-ninth { background-color: #2c3e50; color: #ecf0f1; }
+
+.btn {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 12px 30px;
+    background-color: #2ecc71;
+    color: white;
+    text-decoration: none; /* Убираем подчеркивание у ссылки */
+    border-radius: 25px;   /* Закругляем края */
+    font-weight: bold;
+    transition: 0.3s;      /* Плавный эффект при наведении */
+}
+.btn:hover {
+    background-color: #27ae60; /* Темнеет при наведении мыши */
+}
+.modal {
+    display: none; /* По умолчанию скрыто */
+    position: fixed; 
+    z-index: 1000; /* Отображается поверх всего сайта */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9); /* Черный фон с прозрачностью 90% */
+    justify-content: center;
+    align-items: center;
+}
+.modal-content {
+    max-width: 85%;
+    max-height: 85vh;
+    border-radius: 10px;
+    animation: zoom 0.3s; /* Эффект плавного появления */
+}
+.close {
+    position: absolute;
+    top: 20px;
+    right: 35px;
+    color: #fff;
+    font-size: 50px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+.close:hover {
+    color: #e74c3c; /* При наведении крестик станет красным */
+}
+@keyframes zoom {
+    from { transform: scale(0.7); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+/* Контейнер бокового меню */
+.side-nav {
+    position: fixed;
+    right: 20px; /* Отступ от правого края экрана */
+    top: 50%;
+    transform: translateY(-50%); /* Строгое центрирование по вертикали */
+    display: flex;
+    flex-direction: column;
+    gap: 8px; /* Небольшой аккуратный зазор между плашками */
+    z-index: 999;
+    align-items: flex-end; /* Выравниваем все кнопки по правому краю */
+}
+
+/* Современный стиль кнопок-плашек */
+.nav-btn {
+    display: inline-block;
+    padding: 8px 16px; /* Внутренние отступы: кнопка станет аккуратной */
+    background: rgba(0, 0, 0, 0.45); /* Полупрозрачный темный фон — идеален для любых слайдов */
+    backdrop-filter: blur(5px); /* Эффект размытия заднего плана (матовое стекло) */
+    -webkit-backdrop-filter: blur(5px);
+    color: rgba(255, 255, 255, 0.9); /* Мягкий белый цвет текста */
+    text-decoration: none; /* Убираем подчеркивание */
+    border-radius: 20px; /* Красивые скругленные края («пилюли») */
+    font-family: Arial, sans-serif;
+    font-size: 13px; /* Чуть уменьшаем шрифт, чтобы выглядело изящно */
+    font-weight: bold;
+    white-space: nowrap; /* МАГИЯ: запрещаем тексту переноситься на 2 строчки */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Тонкая, едва заметная светлая рамка */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15); /* Очень мягкая, естественная тень */
+    transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); /* Плавная анимация */
+}
+
+/* Эффект при наведении курсора */
+.nav-btn:hover {
+    background: #2ecc71; /* Твой фирменный зеленый цвет из проекта */
+    border-color: #2ecc71;
+    color: #ffffff;
+    box-shadow: 0 6px 20px rgba(46, 204, 113, 0.4); /* Красивое зеленое свечение вокруг */
+    transform: translateX(-5px); /* Кнопочка изящно сдвигается влево навстречу курсору */
+}
+
+/* Класс для скрытия кнопки текущего слайда (без прыжков меню) */
+.nav-btn.active-slide {
+    opacity: 0;            /* Кнопка становится полностью невидимой */
+    pointer-events: none;  /* Отключаем возможность кликнуть по невидимке */
+    transform: scale(0.7) translateX(10px); /* Она красиво уменьшается и смещается вправо при исчезновении */
+}
+/* Адаптивность для мобильных устройств и планшетов (ширина экрана до 768px) */
+@media (max-width: 768px) {
+    /* Увеличиваем размер фото и видео, чтобы они красиво переносились в столбик */
+    .image-container img, 
+    .image-container video {
+        max-width: 90%; 
+        max-height: 35vh; 
+    }
+
+    /* Уменьшаем шрифты, чтобы текст не занимал весь экран */
+    .container h1 {
+        font-size: 24px;
+    }
+    .container h2 {
+        font-size: 18px;
+    }
+    .container p {
+        font-size: 14px;
+    }
+
+    /* Переносим навигацию вниз экрана */
+    .side-nav {
+        top: auto;
+        bottom: 15px;
+        right: 50%;
+        transform: translateX(50%); /* Центрируем по горизонтали */
+        flex-direction: row; /* Выстраиваем кнопки в ряд */
+        flex-wrap: wrap; /* Позволяем кнопкам переноситься на новую строку */
+        justify-content: center;
+        width: 95%;
+        gap: 5px;
+    }
+
+    /* Делаем кнопки навигации более компактными */
+    .nav-btn {
+        padding: 6px 10px;
+        font-size: 11px;
+    }
+
+    /* Настраиваем анимацию скрытия активной кнопки для горизонтального меню */
+    .nav-btn.active-slide {
+        transform: scale(0.7) translateY(10px); /* Смещаем вниз, а не вправо */
+    }
+
+    /* Расширяем модальное окно (увеличенное фото) */
+    .modal-content {
+        max-width: 95%;
+        max-height: 70vh;
+    }
+    
+    /* Сдвигаем крестик закрытия, чтобы в него было проще попасть пальцем */
+    .close {
+        top: 10px;
+        right: 20px;
+        font-size: 40px;
+    }
+}

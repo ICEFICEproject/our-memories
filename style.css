@@ -214,9 +214,9 @@ html, body {
         bottom: 15px;
         right: 50%;
         transform: translateX(50%); /* Центрируем по горизонтали */
-        flex-direction: column; /* Выстраиваем кнопки в ряд */
+        flex-direction: row; /* Выстраиваем кнопки в ряд */
         flex-wrap: wrap; /* Позволяем кнопкам переноситься на новую строку */
-        justify-content: right;
+        justify-content: center;
         width: 95%;
         gap: 5px;
     }
